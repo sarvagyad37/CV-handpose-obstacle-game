@@ -28,7 +28,7 @@ const DrawCanvas = ({ width, height }: DrawCanvasProps) => {
 
     return (
         <canvas
-            className="absolute"
+            className="absolute z-10"
             style={{ width: width, height: height, transform: "scaleX(-1)" }}
             ref={drawCanvasRef}
         ></canvas>

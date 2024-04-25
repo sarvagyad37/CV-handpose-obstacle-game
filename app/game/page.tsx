@@ -8,8 +8,7 @@ export default function Game() {
     return (
         <main>  
             <GameScene />
-            <div id="game-scene">
-            </div>
+            <div id="game-scene"></div>
         </main>
     )
 }

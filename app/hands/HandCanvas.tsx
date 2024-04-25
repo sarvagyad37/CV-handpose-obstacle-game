@@ -63,7 +63,7 @@ const HandCanvas = () => {
 
     return (
         <div className="flex flex-col items-center">
-            <div className="flex justify-center">
+            <div className="flex flex-col justify-center">
                 <button id="start" onClick={getUserCamera}>Start</button>
                 <video
                     className="w-full h-auto"

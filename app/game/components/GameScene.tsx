@@ -3,20 +3,21 @@ import HandLandmarkManager from '@/class/HandLandmarkManager';
 import * as THREE from 'three';
 import { useRef, useState } from 'react';
 
-
 export default function GameScene() {
 
-    //creating a game where the player is controlled by hand x and y coordinates
     //create a scene
     const scene = new THREE.Scene();
 
-    //create a camera
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
     //create a renderer
     const renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
-    document.getElementById("game-scene")!.appendChild(renderer.domElement);
+    //remove the game-scene div if it exists
+    let gameScene = document.getElementById("game-scene") as HTMLDivElement;
+    //tailwind css position fixed, top 0, left 0, z-index 0
+    gameScene.className = "absolute";
+    gameScene.appendChild(renderer.domElement);
 
     const targetFPS = 60;
     const timeInterval = 1000 / targetFPS;  // Time in milliseconds per frame
@@ -37,9 +38,9 @@ export default function GameScene() {
 
     //create red cubes as obstacles, the player has to avoid them, they are smaller than the player, if the player collides with them, the game is over
     const obstacles: THREE.Mesh<THREE.BoxGeometry, THREE.MeshBasicMaterial, THREE.Object3DEventMap>[] = [];
-    const obstacleGeometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+    const obstacleGeometry = new THREE.BoxGeometry(0.4, 0.4, 0.4);
     const obstacleMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 3; i++) {
         const obstacle = new THREE.Mesh(obstacleGeometry, obstacleMaterial);
         obstacle.position.x = Math.random() * 10 - 5;
         obstacle.position.y = Math.random() * 10 - 5;
@@ -61,6 +62,9 @@ export default function GameScene() {
 
     //create score text
     const scoreElement = document.createElement("div");
+    scoreElement.className = "fixed z-[10] top-0 right-0";
+    scoreElement.innerText = "";
+
     document.body.appendChild(scoreElement);
     let score = 0;
 
@@ -215,16 +219,27 @@ export default function GameScene() {
 
         //reset score
         score = 0;
+        scoreElement.innerText = `Score: ${score}`;
 
     };
+
+    // window.addEventListener('load', getUserCamera), false;
+
+    //start the game
+    const startup = () => {
+        getUserCamera();
+        //delete the start button
+        let startButton = document.getElementById("start") as HTMLButtonElement;
+        startButton.remove();
+    }
 
     return (
         <>
             <div className="flex flex-col items-center">
                 <div className="flex justify-center">
-                    <button id="start" onClick={getUserCamera}>Start</button>
+                    <button id="start" className="m-4 p-4 bg-blue-500 text-white rounded-lg" onClick={startup}>Start Game</button>
                     <video
-                        className="w-full h-auto"
+                        className="fixed top-0 left-0"
                         ref={videoRef}
                         loop={true}
                         muted={true}
@@ -232,6 +247,10 @@ export default function GameScene() {
                         playsInline={true}
                         style={{ zIndex: -3 }}
                     ></video>
+
+                    {/* //Text on right center, 'scroll down to the game scene' */}
+                    <div className="fixed top-1/2 right-0">Once webcam is loaded, Scroll down to the game scene</div>
+                
                     {/* <DrawCanvas width={videoSize.width} height={videoSize.height} /> */}
                 </div>
             </div>
