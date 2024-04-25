@@ -18,6 +18,10 @@ export default function GameScene() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.getElementById("game-scene")!.appendChild(renderer.domElement);
 
+    const targetFPS = 60;
+    const timeInterval = 1000 / targetFPS;  // Time in milliseconds per frame
+    let then = Date.now();
+
     const requestRef = useRef(0);
     const videoRef = useRef<HTMLVideoElement>(null);
     const lastVideoTimeRef = useRef(-1);
@@ -129,6 +133,8 @@ export default function GameScene() {
                     handY = prevHandY;
                 }
 
+                // console.log(prevHandX, prevHandY);
+
             } catch (e) {
                 console.log(e);
             }
@@ -141,53 +147,61 @@ export default function GameScene() {
         //update hand x and y coordinates
         await updateHandCoordinates();
 
-        //move the player
-        cube.position.x = handX! * 10 - 5;
-        cube.position.y = -handY! * 10 + 5;
+        // FPS and Timing Control
+        const now = Date.now();
+        const elapsed = now - then;
 
-        //move the obstacles
-        obstacles.forEach(obstacle => {
-            obstacle.position.y -= 0.1;
-            if (obstacle.position.y < -5) {
-                obstacle.position.y = 5;
-                obstacle.position.x = Math.random() * 10 - 5;
-            }
-        });
+        if (elapsed > timeInterval) {
+            then = now - (elapsed % timeInterval);
 
-        //move the coins
-        coins.forEach(coin => {
-            coin.position.y -= 0.1;
-            if (coin.position.y < -5) {
-                coin.position.y = 5;
-                coin.position.x = Math.random() * 10 - 5;
-            }
-        });
+            //move the player
+            cube.position.x = handX! * 10 - 5;
+            cube.position.y = -handY! * 10 + 5;
 
-        //check for collisions
-        playerBox.setFromObject(cube);
-        obstacles.forEach(obstacle => {
-            obstacleBox.setFromObject(obstacle);
-            if (playerBox.intersectsBox(obstacleBox)) {
-                if (handX && handY) { gameOver() }
-            }
-        });
+            //move the obstacles
+            obstacles.forEach(obstacle => {
+                obstacle.position.y -= 0.1;
+                if (obstacle.position.y < -5) {
+                    obstacle.position.y = 5;
+                    obstacle.position.x = Math.random() * 10 - 5;
+                }
+            });
 
-        coins.forEach(coin => {
-            coinBox.setFromObject(coin);
-            if (playerBox.intersectsBox(coinBox)) {
-                // check hands not null
-                if (handX && handY) {
-                    score++;
-                    scoreElement.innerText = `Score: ${score}`;
-                    //reset coin position
+            //move the coins
+            coins.forEach(coin => {
+                coin.position.y -= 0.1;
+                if (coin.position.y < -5) {
                     coin.position.y = 5;
                     coin.position.x = Math.random() * 10 - 5;
                 }
-            }
-        });
+            });
 
-        //render the scene
-        renderer.render(scene, camera);
+            //check for collisions
+            playerBox.setFromObject(cube);
+            obstacles.forEach(obstacle => {
+                obstacleBox.setFromObject(obstacle);
+                if (playerBox.intersectsBox(obstacleBox)) {
+                    if (handX && handY) { gameOver() }
+                }
+            });
+
+            coins.forEach(coin => {
+                coinBox.setFromObject(coin);
+                if (playerBox.intersectsBox(coinBox)) {
+                    // check hands not null
+                    if (handX && handY) {
+                        score++;
+                        scoreElement.innerText = `Score: ${score}`;
+                        //reset coin position
+                        coin.position.y = 5;
+                        coin.position.x = Math.random() * 10 - 5;
+                    }
+                }
+            });
+
+            //render the scene
+            renderer.render(scene, camera);
+        }
 
         //request next frame
         requestRef.current = requestAnimationFrame(animate);
@@ -216,6 +230,7 @@ export default function GameScene() {
                         muted={true}
                         autoPlay={true}
                         playsInline={true}
+                        style={{ zIndex: -3 }}
                     ></video>
                     {/* <DrawCanvas width={videoSize.width} height={videoSize.height} /> */}
                 </div>
