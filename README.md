@@ -1,6 +1,6 @@
 # Uncanny Boxes: A Hand-Controlled Game
 
-This project is a fun and challenging game built with Next.js that uses your webcam and hand detection to control cubes.
+This project is a fun and challenging game built with Next.js that uses your webcam and hand detection to control cubes. Online link: [uncannyboxes.vercel.app/game](https://uncannyboxes.vercel.app/game)
 
 ## Prerequisites:
 
