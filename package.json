@@ -15,8 +15,10 @@
     "next": "14.2.3",
     "npm": "^10.5.2",
     "react": "^18",
+    "react-devtools": "^5.1.0",
     "react-dom": "^18",
-    "three": "^0.164.0"
+    "three": "^0.164.0",
+    "yarn": "^1.22.22"
   },
   "devDependencies": {
     "@types/node": "^20",

@@ -52,7 +52,7 @@ class HandLandmarkManager {
         const landmarks = results.landmarks;
         if (landmarks) {
             for (const landmark of landmarks) {
-                const center = this.getLandmarkCenter(landmark[8]);
+                const center = this.getLandmarkCenter(landmark[9]);
                 return center;
             }
         }
@@ -83,16 +83,16 @@ class HandLandmarkManager {
                 const x = landmark.x;
                 const y = landmark.y;
 
-                // draw a circle at the landmark
-                ctx.beginPath();
-                ctx.arc(x, y, 10, 0, 2 * Math.PI);
-                ctx.fillStyle = "#FF0000";
-                ctx.fill();
+                // // draw a circle at the landmark
+                // ctx.beginPath();
+                // ctx.arc(x, y, 10, 0, 2 * Math.PI);
+                // ctx.fillStyle = "#FF0000";
+                // ctx.fill();
 
-                // draw the landmark index
-                ctx.fillStyle = "#FFFFFF";
-                ctx.font = "12px Arial";
-                ctx.fillText("8", x, y);
+                // // draw the landmark index
+                // ctx.fillStyle = "#FFFFFF";
+                // ctx.font = "12px Arial";
+                // ctx.fillText("8", x, y);
 
                 // console.log(landmark);
 

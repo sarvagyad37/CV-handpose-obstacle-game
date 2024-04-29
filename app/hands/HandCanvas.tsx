@@ -56,6 +56,14 @@ const HandCanvas = () => {
         }
     };
 
+    //start the game
+    const startup = () => {
+        getUserCamera();
+        //delete the start button
+        let startButton = document.getElementById("start") as HTMLButtonElement;
+        startButton.remove();
+    }
+
 
     //use useEffect to get user camera on button click
     
@@ -64,7 +72,7 @@ const HandCanvas = () => {
     return (
         <div className="flex flex-col items-center">
             <div className="flex flex-col justify-center">
-                <button id="start" onClick={getUserCamera}>Start</button>
+                <button id="start" onClick={startup}>Start</button>
                 <video
                     className="w-full h-auto"
                     ref={videoRef}

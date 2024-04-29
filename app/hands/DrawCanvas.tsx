@@ -1,5 +1,6 @@
 import HandLandmarkManager from "@/class/HandLandmarkManager";
 import { useEffect, useRef, useState } from "react";
+import './DrawCanvas.css';
 
 interface DrawCanvasProps {
     width: number;
@@ -28,7 +29,7 @@ const DrawCanvas = ({ width, height }: DrawCanvasProps) => {
 
     return (
         <canvas
-            className="absolute z-10"
+            id="drawCanvas"
             style={{ width: width, height: height, transform: "scaleX(-1)" }}
             ref={drawCanvasRef}
         ></canvas>

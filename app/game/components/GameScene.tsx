@@ -2,6 +2,8 @@
 import HandLandmarkManager from '@/class/HandLandmarkManager';
 import * as THREE from 'three';
 import { useRef, useState } from 'react';
+import './GameScene.css';
+import DrawCanvas from '@/app/hands/DrawCanvas';
 
 export default function GameScene() {
 
@@ -16,10 +18,11 @@ export default function GameScene() {
     //remove the game-scene div if it exists
     let gameScene = document.getElementById("game-scene") as HTMLDivElement;
     //tailwind css position fixed, top 0, left 0, z-index 0
+    gameScene.style.zIndex = "-2"
     gameScene.className = "absolute";
     gameScene.appendChild(renderer.domElement);
 
-    const targetFPS = 60;
+    const targetFPS = 120;
     const timeInterval = 1000 / targetFPS;  // Time in milliseconds per frame
     let then = Date.now();
 
@@ -48,7 +51,8 @@ export default function GameScene() {
         obstacles.push(obstacle);
     }
 
-    // create coins that the player has to collect, they are smaller than the player, if the player collides with them, the player gets a point
+    // create coins that the player has to collect, they are smaller than the player, 
+    // if the player collides with them, the player gets a point
     const coins: THREE.Mesh<THREE.BoxGeometry, THREE.MeshBasicMaterial, THREE.Object3DEventMap>[] = [];
     const coinGeometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);
     const coinMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 });
@@ -62,8 +66,10 @@ export default function GameScene() {
 
     //create score text
     const scoreElement = document.createElement("div");
-    scoreElement.className = "fixed z-[10] top-0 right-0";
-    scoreElement.innerText = "";
+
+    scoreElement.className = "score";
+
+    scoreElement.innerText = '';
 
     document.body.appendChild(scoreElement);
     let score = 0;
@@ -93,8 +99,8 @@ export default function GameScene() {
                 videoRef.current.srcObject = stream;
                 videoRef.current.onloadedmetadata = () => {
                     setVideoSize({
-                        width: videoRef.current!.offsetWidth,
-                        height: videoRef.current!.offsetHeight,
+                        width: 320,
+                        height: 240,
                     });
                     videoRef.current!.play();
 
@@ -137,7 +143,7 @@ export default function GameScene() {
                     handY = prevHandY;
                 }
 
-                // console.log(prevHandX, prevHandY);
+                // console.log(handX, handY);
 
             } catch (e) {
                 console.log(e);
@@ -196,6 +202,8 @@ export default function GameScene() {
                     if (handX && handY) {
                         score++;
                         scoreElement.innerText = `Score: ${score}`;
+                        // PlayAudio();
+
                         //reset coin position
                         coin.position.y = 5;
                         coin.position.x = Math.random() * 10 - 5;
@@ -216,15 +224,14 @@ export default function GameScene() {
         cancelAnimationFrame(requestRef.current);
         //alert the user, gameover, score, restart the game
         alert(`Game Over! Your score is ${score}`);
+        // PlayGameOverAudio();
 
         //reset score
         score = 0;
         scoreElement.innerText = `Score: ${score}`;
 
     };
-
-    // window.addEventListener('load', getUserCamera), false;
-
+    
     //start the game
     const startup = () => {
         getUserCamera();
@@ -232,7 +239,7 @@ export default function GameScene() {
         let startButton = document.getElementById("start") as HTMLButtonElement;
         startButton.remove();
     }
-
+    
     return (
         <>
             <div className="flex flex-col items-center">
@@ -245,13 +252,13 @@ export default function GameScene() {
                         muted={true}
                         autoPlay={true}
                         playsInline={true}
-                        style={{ zIndex: -3 }}
+                        style={{ zIndex: -1 }}
+                        width={videoSize.width}
+                        height={videoSize.height}
                     ></video>
-
+                    
                     {/* //Text on right center, 'scroll down to the game scene' */}
-                    <div className="fixed top-1/2 right-0">Once webcam is loaded, Scroll down to the game scene</div>
-                
-                    {/* <DrawCanvas width={videoSize.width} height={videoSize.height} /> */}
+                    <DrawCanvas width={videoSize.width} height={videoSize.height} />
                 </div>
             </div>
         </>

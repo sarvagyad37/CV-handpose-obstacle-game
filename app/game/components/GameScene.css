@@ -1,0 +1,10 @@
+.score{
+    color: white;
+    position: fixed;
+}
+
+#drawCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+}
