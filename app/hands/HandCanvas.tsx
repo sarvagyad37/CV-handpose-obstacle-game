@@ -66,7 +66,7 @@ const HandCanvas = () => {
 
 
     //use useEffect to get user camera on button click
-    
+
     // startButton.addEventListener("click", getUserCamera);
 
     return (
@@ -81,6 +81,13 @@ const HandCanvas = () => {
                     autoPlay={true}
                     playsInline={true}
                 ></video>
+                <style>
+                    {`
+                        #drawCanvas {
+                            position: absolute
+                        }            
+                    `}
+                </style>
                 <DrawCanvas width={videoSize.width} height={videoSize.height} />
             </div>
         </div>

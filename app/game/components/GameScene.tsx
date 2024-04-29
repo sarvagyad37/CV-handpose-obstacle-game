@@ -2,7 +2,7 @@
 import HandLandmarkManager from '@/class/HandLandmarkManager';
 import * as THREE from 'three';
 import { useRef, useState } from 'react';
-import './GameScene.css';
+
 import DrawCanvas from '@/app/hands/DrawCanvas';
 
 export default function GameScene() {
@@ -256,6 +256,20 @@ export default function GameScene() {
                         width={videoSize.width}
                         height={videoSize.height}
                     ></video>
+                    <style>
+                        {`
+                            .score{
+                                color: white;
+                                position: fixed;
+                            }
+                            
+                            #drawCanvas {
+                                position: fixed;
+                                top: 0;
+                                left: 0;
+                            }                            
+                        `}
+                    </style>
                     
                     {/* //Text on right center, 'scroll down to the game scene' */}
                     <DrawCanvas width={videoSize.width} height={videoSize.height} />
