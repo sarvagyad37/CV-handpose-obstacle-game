@@ -117,7 +117,6 @@ export default function GameScene() {
     let prevHandX: number | undefined = 0;
     let prevHandY: number | undefined = 0;
 
-
     //update hand x and y coordinates
     const updateHandCoordinates = async () => {
         if (
@@ -261,6 +260,8 @@ export default function GameScene() {
                             .score{
                                 color: white;
                                 position: fixed;
+                                top: 0;
+                                right: 0;
                             }
                             
                             #drawCanvas {
@@ -271,7 +272,6 @@ export default function GameScene() {
                         `}
                     </style>
                     
-                    {/* //Text on right center, 'scroll down to the game scene' */}
                     <DrawCanvas width={videoSize.width} height={videoSize.height} />
                 </div>
             </div>
